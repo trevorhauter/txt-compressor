@@ -1,8 +1,21 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
+
+
 public class Compressor {
+    private static Map<String, Integer> getInitialMap() {
+        Map<String, Integer> initialMap = new HashMap<String, Integer>();
+        for (int i = 0; i < 256; i++) {
+            initialMap.put(Character.toString((char) i), i);
+        }
+        return initialMap;
+    }
+
     private static String readFile(String filePath) {
         String fileContext = "";
         try {
@@ -20,8 +33,29 @@ public class Compressor {
         return fileContext;
     }
 
-    public static void compress(String filePath) {
-        String fileContext = readFile(filePath);
-        System.out.println(fileContext);
+    public static ArrayList<Integer> compress(String filePath) {
+        // Implementation of LZW compression algorithm
+        ArrayList<Integer> compressedData = new ArrayList<>();
+        String fileContent = readFile(filePath);
+        Map<String, Integer> compressionMap = getInitialMap();
+
+        String tmp = "";
+        // Find the longest string W in the dictionary that matches the current input.
+        for (char c : fileContent.toCharArray()) {
+            String currStr = tmp + c;
+            if (compressionMap.containsKey(currStr)) {
+                tmp = currStr;
+            } else {
+                compressedData.add(compressionMap.get(tmp));                
+                compressionMap.put(currStr, compressionMap.size());
+                tmp = Character.toString(c);
+            }
+        }
+
+        if (tmp != null) {
+            compressedData.add(compressionMap.get(tmp));
+        }
+
+        return compressedData;
     }
 }
