@@ -14,11 +14,25 @@ public class Main {
 
         ArrayList<Integer> compressedData = Compressor.compress(filePath);
 
+        String compressedFilePath = filePath + ".lzw";
+        String decompressedFilePath = filePath + ".decompressed";
 
         try {
-            FileWriter compressedFileWriter = new FileWriter(filePath + ".lzw"); 
-            compressedFileWriter.write(compressedData.toString().replace(" ", ",").replace("[", "").replace("]", "")); 
+            FileWriter compressedFileWriter = new FileWriter(compressedFilePath); 
+            compressedFileWriter.write(compressedData.toString().replace(", ", ",").replace("[", "").replace("]", "")); 
             compressedFileWriter.close();
+        } catch (IOException e) {
+            System.out.println("An error occured.");
+            e.printStackTrace();
+        }
+
+        // TODO: Add support for CLI arguments
+        String decompressedData = Compressor.decompress(compressedFilePath);
+
+        try {
+            FileWriter decompressedFileWriter = new FileWriter(decompressedFilePath); 
+            decompressedFileWriter.write(decompressedData); 
+            decompressedFileWriter.close();
         } catch (IOException e) {
             System.out.println("An error occured.");
             e.printStackTrace();
