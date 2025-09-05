@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Scanner;
 
 
-
 public class Compressor {
     private static Map<String, Integer> buildCompressionMap() {
         Map<String, Integer> initialMap = new HashMap<String, Integer>();
