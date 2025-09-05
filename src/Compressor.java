@@ -75,7 +75,7 @@ public class Compressor {
 
         ArrayList<String> compressedData = new ArrayList<String>(Arrays.asList(compressedFileContent.split(",")));
 
-        String tmp = compressedData.get(0);
+        String tmp = decompressionMap.get(Integer.parseInt(compressedData.get(0)));
         compressedData.remove(0);
 
         decompressedData += tmp;
@@ -87,7 +87,7 @@ public class Compressor {
 
             if (decompressionMap.containsKey(idx)) {
                 entry = decompressionMap.get(idx);
-            } else if (decompressionMap.containsKey(idx)) {
+            } else if (idx == decompressionMap.size()) {
                 entry = tmp + tmp.charAt(0);
             }
 
@@ -95,6 +95,7 @@ public class Compressor {
 
             // new sequence; add it to the dictionary
             decompressionMap.put(decompressionMap.size(), tmp + entry.charAt(0));
+            tmp = entry;
         }
         
         return decompressedData;
